@@ -38,7 +38,7 @@ A super simple FastAPI application that allows students to view and sign up for 
 1. Install test dependencies:
 
    ```
-   pip install -r requirements-dev.txt
+   pip install -r requirements.txt
    ```
 
 2. Run all backend tests:
