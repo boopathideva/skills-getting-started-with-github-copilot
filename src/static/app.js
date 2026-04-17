@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
             button.dataset.email = encodeURIComponent(participant);
             button.setAttribute("aria-label", `Remove ${participant} from ${name}`);
             button.setAttribute("title", "Unregister participant");
-            button.innerHTML = "&#128465;";
+            button.textContent = "\u{1F5D1}";
 
             li.appendChild(span);
             li.appendChild(button);
