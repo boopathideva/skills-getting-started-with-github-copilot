@@ -44,38 +44,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
         const participants = details.participants || [];
-        const participantsMarkup = participants.length
-          ? participants
-              .map(
-                (participant) => `
-                  <li class="participant-item">
-                    <span class="participant-email">${escapeHtml(participant)}</span>
-                    <button
-                      type="button"
-                      class="participant-remove-btn"
-                      data-activity="${encodeURIComponent(name)}"
-                      data-email="${encodeURIComponent(participant)}"
-                      aria-label="Remove ${escapeHtml(participant)} from ${escapeHtml(name)}"
-                      title="Unregister participant"
-                    >&#128465;</button>
-                  </li>
-                `
-              )
-              .join("")
-          : '<li class="empty-participants">No participants yet</li>';
 
         activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
+          <h4>${escapeHtml(name)}</h4>
+          <p>${escapeHtml(details.description)}</p>
+          <p><strong>Schedule:</strong> ${escapeHtml(details.schedule)}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
             <p class="participants-title">Participants</p>
-            <ul class="participants-list">
-              ${participantsMarkup}
-            </ul>
+            <ul class="participants-list"></ul>
           </div>
         `;
+
+        const participantsList = activityCard.querySelector(".participants-list");
+
+        if (participants.length) {
+          participants.forEach((participant) => {
+            const li = document.createElement("li");
+            li.className = "participant-item";
+
+            const span = document.createElement("span");
+            span.className = "participant-email";
+            span.textContent = participant;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "participant-remove-btn";
+            button.dataset.activity = encodeURIComponent(name);
+            button.dataset.email = encodeURIComponent(participant);
+            button.setAttribute("aria-label", `Remove ${participant} from ${name}`);
+            button.setAttribute("title", "Unregister participant");
+            button.innerHTML = "&#128465;";
+
+            li.appendChild(span);
+            li.appendChild(button);
+            participantsList.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.className = "empty-participants";
+          li.textContent = "No participants yet";
+          participantsList.appendChild(li);
+        }
 
         activitiesList.appendChild(activityCard);
 
